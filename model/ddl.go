@@ -190,8 +190,10 @@ type Job struct {
 	// DependencyID is the job's ID that the current job depends on.
 	DependencyID int64 `json:"dependency_id"`
 	// Query string of the ddl job.
-	Query      string       `json:"query"`
-	BinlogInfo *HistoryInfo `json:"binlog"`
+	Query string `json:"query"`
+
+	InsertQuery string       `json:"insert_query"`
+	BinlogInfo  *HistoryInfo `json:"binlog"`
 
 	// Version indicates the DDL job version. For old jobs, it will be 0.
 	Version int64 `json:"version"`
