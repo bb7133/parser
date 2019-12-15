@@ -905,6 +905,9 @@ type CreateTableStmt struct {
 	Partition   *PartitionOptions
 	OnDuplicate OnDuplicateKeyHandlingType
 	Select      ResultSetNode
+
+	// InsertQuery is used internally.
+	InsertQuery string
 }
 
 // Restore implements Node interface.
