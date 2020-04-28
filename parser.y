@@ -803,6 +803,7 @@ import (
 	PreparedStmt         "PreparedStmt"
 	SelectStmt           "SELECT statement"
 	RenameTableStmt      "rename table statement"
+	RenameDatabaseStmt   "rename database statment"
 	ReplaceIntoStmt      "REPLACE INTO statement"
 	RecoverTableStmt     "recover table statement"
 	RevokeStmt           "Revoke statement"
@@ -3121,6 +3122,15 @@ IndexKeyTypeOpt:
 |	"FULLTEXT"
 	{
 		$$ = ast.IndexKeyTypeFullText
+	}
+
+RenameDatabaseStmt:
+	"RENAME" DatabaseSym DBName "TO" DBName
+	{
+		$$ = &ast.RenameDatabaseStmt{
+			OldDB: $3,
+			NewDB: $5,
+		}
 	}
 
 /**************************************AlterDatabaseStmt***************************************
@@ -9231,6 +9241,7 @@ Statement:
 |	PreparedStmt
 |	RollbackStmt
 |	RenameTableStmt
+|	RenameDatabaseStmt
 |	ReplaceIntoStmt
 |	RecoverTableStmt
 |	RevokeStmt
