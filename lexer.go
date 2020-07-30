@@ -599,6 +599,18 @@ func (mb *lazyBuf) data() string {
 	return lit
 }
 
+func truncateTailingSpace(str string) string {
+	byteLen := len(str)
+	i := byteLen - 1
+	for ; i >= 0; i-- {
+		if str[i] != ' ' {
+			break
+		}
+	}
+	str = str[:i+1]
+	return str
+}
+
 func (s *Scanner) scanString() (tok int, pos Pos, lit string) {
 	tok, pos = stringLit, s.r.pos()
 	mb := lazyBuf{false, &s.r, &s.buf, &pos}
@@ -609,6 +621,7 @@ func (s *Scanner) scanString() (tok int, pos Pos, lit string) {
 			s.r.inc()
 			if s.r.peek() != ending {
 				lit = mb.data()
+				lit = truncateTailingSpace(lit)
 				return
 			}
 			str := mb.r.data(&pos)
@@ -625,6 +638,7 @@ func (s *Scanner) scanString() (tok int, pos Pos, lit string) {
 	}
 
 	tok = unicode.ReplacementChar
+	lit = truncateTailingSpace(lit)
 	return
 }
 
